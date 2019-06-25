@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">カービィ Wallpaper</string>
+    <string name="wallpaper_description">A wallpaper with Kirby gazing around</string>
+
+    <string name="settings_category_title">Settings Category</string>
+    <string name="bored_category_title">Bored Category</string>
+
+    <string name="step_count_title">Step Count</string>
+    <string name="enable_touch_title">Enable Touch</string>
+    <string name="distance_coefficient_title">Distance Coefficient</string>
+    <string name="size_coefficient_title">Size Coefficient</string>
+    <string name="translate_coefficient_title">Translate Coefficient</string>
+    <string name="scale_coefficient_title">Scale Coefficient</string>
+    <string name="skew_coefficient_title">Skew Coefficient</string>
+    <string name="enable_bored_title">Enable Bored</string>
+    <string name="bored_delay_title">Bored Delay</string>
+
+    <string name="step_count_key">stepCount</string>
+    <string name="enable_touch_key">enableTouch</string>
+    <string name="distance_coefficient_key">distanceCoefficient</string>
+    <string name="size_coefficient_key">sizeCoefficient</string>
+    <string name="translate_coefficient_key">translateCoefficient</string>
+    <string name="scale_coefficient_key">scaleCoefficient</string>
+    <string name="skew_coefficient_key">skewCoefficient</string>
+    <string name="enable_bored_key">enableBored</string>
+    <string name="bored_delay_key">boredDelay</string>
+</resources>
