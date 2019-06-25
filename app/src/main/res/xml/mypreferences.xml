@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <EditTextPreference
-            android:title=""
-            android:key="Hay!"/>
+    <PreferenceCategory
+            android:title="">
+        <EditTextPreference
+                android:defaultValue="8"
+                android:key="@string/step_count_key"
+                android:title="@string/step_count_title"
+                android:inputType="number"/>
 
-    <EditTextPreference
-            android:defaultValue="8"
-            android:key="@string/step_count_key"
-            android:title="@string/step_count_title"
-            android:inputType="number"/>
-
-    <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="@string/enable_touch_key"
-            android:title="@string/enable_touch_title"/>
+        <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="@string/enable_touch_key"
+                android:title="@string/enable_touch_title"/>
+    </PreferenceCategory>
 
     <PreferenceCategory
             android:title="@string/settings_category_title">

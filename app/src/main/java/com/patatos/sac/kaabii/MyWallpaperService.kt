@@ -205,8 +205,8 @@ class MyWallpaperService : WallpaperService() {
 
             this.handler.removeCallbacks(this.updateThread)
 
-            //if (this.visible)
-                //this.handler.postDelayed(this.updateThread, 5000)
+            if (this.visible)
+                this.handler.postDelayed(this.updateThread, 5000)
 
             if (this.enableBored && !this.boring) {
                 this.handler.removeCallbacks(this.boredThread)
