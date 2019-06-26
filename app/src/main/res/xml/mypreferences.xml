@@ -4,13 +4,13 @@
     <PreferenceCategory
             android:title="">
         <EditTextPreference
-                android:defaultValue="8"
+                android:defaultValue="@string/step_count_default"
                 android:key="@string/step_count_key"
                 android:title="@string/step_count_title"
                 android:inputType="number"/>
 
         <CheckBoxPreference
-                android:defaultValue="true"
+                android:defaultValue="@string/enable_touch_default"
                 android:key="@string/enable_touch_key"
                 android:title="@string/enable_touch_title"/>
     </PreferenceCategory>
@@ -18,27 +18,27 @@
     <PreferenceCategory
             android:title="@string/settings_category_title">
         <EditTextPreference
-                android:defaultValue="1.5"
+                android:defaultValue="@string/distance_coefficient_default"
                 android:key="@string/distance_coefficient_key"
                 android:title="@string/distance_coefficient_title"
                 android:inputType="numberDecimal"/>
         <EditTextPreference
-                android:defaultValue="0.64"
+                android:defaultValue="@string/size_coefficient_default"
                 android:key="@string/size_coefficient_key"
                 android:title="@string/size_coefficient_title"
                 android:inputType="numberDecimal"/>
         <EditTextPreference
-                android:defaultValue="0.42"
+                android:defaultValue="@string/translate_coefficient_default"
                 android:key="@string/translate_coefficient_key"
                 android:title="@string/translate_coefficient_title"
                 android:inputType="numberDecimal"/>
         <EditTextPreference
-                android:defaultValue="1"
+                android:defaultValue="@string/scale_coefficient_default"
                 android:key="@string/scale_coefficient_key"
                 android:title="@string/scale_coefficient_title"
                 android:inputType="numberDecimal"/>
         <EditTextPreference
-                android:defaultValue="0.24"
+                android:defaultValue="@string/skew_coefficient_default"
                 android:key="@string/skew_coefficient_key"
                 android:title="@string/skew_coefficient_title"
                 android:inputType="numberDecimal"/>
@@ -47,13 +47,26 @@
     <PreferenceCategory
             android:title="@string/bored_category_title">
         <CheckBoxPreference
-                android:defaultValue="true"
+                android:defaultValue="@string/enable_bored_default"
                 android:key="@string/enable_bored_key"
                 android:title="@string/enable_bored_title"/>
         <EditTextPreference
-                android:defaultValue="4.2"
+                android:defaultValue="@string/bored_delay_default"
                 android:key="@string/bored_delay_key"
                 android:title="@string/bored_delay_title"
+                android:inputType="numberDecimal"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="@string/uninterested_category_title">
+        <CheckBoxPreference
+                android:defaultValue="@string/enable_uninterested_default"
+                android:key="@string/enable_uninterested_key"
+                android:title="@string/enable_uninterested_title"/>
+        <EditTextPreference
+                android:defaultValue="@string/uninterested_delay_default"
+                android:key="@string/uninterested_delay_key"
+                android:title="@string/uninterested_delay_title"
                 android:inputType="numberDecimal"/>
     </PreferenceCategory>
 

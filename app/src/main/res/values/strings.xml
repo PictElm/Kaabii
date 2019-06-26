@@ -4,6 +4,7 @@
 
     <string name="settings_category_title">Settings Category</string>
     <string name="bored_category_title">Bored Category</string>
+    <string name="uninterested_category_title">Uninterested Category</string>
 
     <string name="step_count_title">Step Count</string>
     <string name="enable_touch_title">Enable Touch</string>
@@ -14,6 +15,8 @@
     <string name="skew_coefficient_title">Skew Coefficient</string>
     <string name="enable_bored_title">Enable Bored</string>
     <string name="bored_delay_title">Bored Delay</string>
+    <string name="enable_uninterested_title">Enable Uninterested</string>
+    <string name="uninterested_delay_title">Uninterested Delay</string>
 
     <string name="step_count_key">stepCount</string>
     <string name="enable_touch_key">enableTouch</string>
@@ -24,4 +27,18 @@
     <string name="skew_coefficient_key">skewCoefficient</string>
     <string name="enable_bored_key">enableBored</string>
     <string name="bored_delay_key">boredDelay</string>
+    <string name="enable_uninterested_key">enableUninterested</string>
+    <string name="uninterested_delay_key">uninterestedDelay</string>
+
+    <string name="step_count_default">16</string>
+    <string name="enable_touch_default">true</string>
+    <string name="distance_coefficient_default">1.5</string>
+    <string name="size_coefficient_default">0.64</string>
+    <string name="translate_coefficient_default">0.42</string>
+    <string name="scale_coefficient_default">1</string>
+    <string name="skew_coefficient_default">1</string>
+    <string name="enable_bored_default">true</string>
+    <string name="bored_delay_default">4.2</string>
+    <string name="enable_uninterested_default">false</string>
+    <string name="uninterested_delay_default">12</string>
 </resources>
