@@ -25,8 +25,8 @@ class MyWallpaperService : WallpaperService() {
             val off = this.size / 2
 
             this.move(
-                off + Math.random().toFloat() * (this.width - off) - this.width / 2,
-                off + Math.random().toFloat() * (this.height - off) - this.height / 2,
+                this.rand(off, this.width - off, .4f, .2f, .4f) - this.width / 2,
+                this.rand(off, this.height - off, .4f, .2f, .4f) - this.height / 2,
                 (Math.random() * this.stepCount).toInt() + 2
             )
 
@@ -62,6 +62,7 @@ class MyWallpaperService : WallpaperService() {
         private var visible = true
         private var boring = false
         private var uninteresting = false
+        private var moving = false
 
         private var stepCount: Int
         private var enableTouch: Boolean
@@ -72,8 +73,10 @@ class MyWallpaperService : WallpaperService() {
         private var skewCoefficient: Float
         private var enableBored: Boolean
         private var boredMillis: Long
+        private var boredProba: Float
         private var enableUninterested: Boolean
         private var uninterestedMillis: Long
+        private var uninterestedProba: Float
 
         private var width = 0f
         private var height = 0f
@@ -96,9 +99,11 @@ class MyWallpaperService : WallpaperService() {
                 this.scaleCoefficient = it.getString(str(R.string.scale_coefficient_key), str(R.string.scale_coefficient_default))!!.toFloat()
                 this.skewCoefficient = it.getString(str(R.string.skew_coefficient_key), str(R.string.skew_coefficient_default))!!.toFloat()
                 this.enableBored = it.getBoolean(str(R.string.enable_bored_key), true)
-                this.boredMillis = (it.getString(str(R.string.bored_delay_key), str(R.string.bored_delay_default))!!.toFloat() * 1000).toLong()
-                this.enableUninterested = it.getBoolean(str(R.string.enable_uninterested_key), false)
-                this.uninterestedMillis = (it.getString(str(R.string.uninterested_delay_key), str(R.string.uninterested_delay_default))!!.toFloat() * 1000).toLong()
+                this.boredMillis = it.getString(str(R.string.bored_delay_key), str(R.string.bored_delay_default))!!.toLong() * 1000
+                this.boredProba = it.getString(str(R.string.bored_proba_key), str(R.string.bored_proba_default))!!.toFloat()
+                this.enableUninterested = it.getBoolean(str(R.string.enable_uninterested_key), true)
+                this.uninterestedMillis = it.getString(str(R.string.uninterested_delay_key), str(R.string.uninterested_delay_default))!!.toLong() * 1000
+                this.uninterestedProba = it.getString(str(R.string.uninterested_proba_key), str(R.string.uninterested_proba_default))!!.toFloat()
             }
         }
 
@@ -129,17 +134,22 @@ class MyWallpaperService : WallpaperService() {
         }
 
         override fun onTouchEvent(event: MotionEvent) {
-            if (this.enableTouch && !this.uninteresting) {
-                this.move(
-                    event.x - this.width / 2,
-                    event.y - this.height / 2,
-                    (Math.random() * this.stepCount).toInt() + 2
-                )
+            if (this.enableTouch) {
+                if (!this.uninteresting) {
+                    this.move(
+                        event.x - this.width / 2,
+                        event.y - this.height / 2,
+                        (Math.random() * this.stepCount).toInt() + 2
+                    )
 
-                if (this.boring) {
-                    this.handler.removeCallbacks(this.boredThread)
-                    this.boring = false
+                    if (this.boring) {
+                        this.handler.removeCallbacks(this.boredThread)
+                        this.boring = false
+                    }
                 }
+
+                this.doUninteresting()
+                if (Math.random() < .5) this.doBoring()
 
                 super.onTouchEvent(event)
             }
@@ -163,16 +173,34 @@ class MyWallpaperService : WallpaperService() {
             }
         }
 
+        private fun rand(min: Float, max: Float, vararg repartition: Float): Float {
+            val pick = Math.random()
+
+            var k = 0
+            var cumul = repartition[k]
+            while (cumul < pick && k < repartition.count() - 1)
+                cumul+= repartition[++k]
+
+            val minOff = k.toFloat() / repartition.count()
+            val maxOff = (k + 1).toFloat() / repartition.count()
+            return min + (max - min) * (minOff + (maxOff - minOff) * Math.random()).toFloat()
+        }
+
         private fun ease(a: Float, b: Float, k: Int, n: Int): Float {
             return a + (b - a) * k / n
         }
 
         private fun move(px:  Float, py: Float, steps: Int) {
+            if (this.moving) return
+            this.moving = true
+
             val sx = this.x
             val sy = this.y
 
             for (k in 0..steps)
                 this.target(this.ease(sx, px, k + 1, steps), this.ease(sy, py, k + 1, steps))
+
+            this.moving = false
         }
 
         private fun delay(millis: Long) {
@@ -218,21 +246,10 @@ class MyWallpaperService : WallpaperService() {
             }
 
             this.handler.removeCallbacks(this.updateThread)
-
             if (this.visible)
-                this.handler.postDelayed(this.updateThread, 10000)
+                this.handler.postDelayed(this.updateThread, this.boredMillis * 2)
 
-            if (this.enableBored && !this.boring && Math.random() < .8) {
-                this.handler.removeCallbacks(this.boredThread)
-                this.handler.postDelayed(this.boredThread, ((.5 + Math.random()) * this.boredMillis).toLong())
-                this.boring = true
-            }
-
-            if (this.enableUninterested && !this.uninteresting && Math.random() < .2) {
-                this.handler.removeCallbacks(this.uninterestedThread)
-                this.handler.postDelayed(this.uninterestedThread, ((.5 + Math.random()) * this.uninterestedMillis).toLong())
-                this.uninteresting = true
-            }
+            this.doBoring()
         }
 
         private fun draw(canvas: Canvas, px: Float, py: Float) {
@@ -272,6 +289,30 @@ class MyWallpaperService : WallpaperService() {
 
         private fun ellipse(canvas: Canvas, cx: Float, cy: Float, rx: Float, ry: Float, paint: Paint) {
             canvas.drawOval(cx - rx, cy - ry, cx + rx, cy + ry, paint)
+        }
+
+        private fun doBoring() {
+            if (this.enableBored && !this.boring && Math.random() < this.boredProba) {
+                this.handler.removeCallbacks(this.boredThread)
+                //this.handler.postDelayed(this.boredThread, ((.5 + Math.random()) * this.boredMillis).toLong())
+                this.handler.postDelayed(
+                    this.boredThread,
+                    this.rand(.5f * this.boredMillis, 1f * this.boredMillis, .05f, .1f, .7f, .1f, .05f).toLong()
+                )
+                this.boring = true
+            }
+        }
+
+        private fun doUninteresting() {
+            if (!this.uninteresting && this.enableUninterested && Math.random() < this.uninterestedProba) {
+                this.handler.removeCallbacks(this.uninterestedThread)
+                //this.handler.postDelayed(this.uninterestedThread, ((.5 + Math.random()) * this.uninterestedMillis).toLong())
+                this.handler.postDelayed(
+                    this.uninterestedThread,
+                    this.rand(.5f * this.uninterestedMillis, 1f * this.uninterestedMillis, .05f, .1f, .7f, .1f, .05f).toLong()
+                )
+                this.uninteresting = true
+            }
         }
 
     }

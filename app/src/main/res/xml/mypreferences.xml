@@ -55,6 +55,11 @@
                 android:key="@string/bored_delay_key"
                 android:title="@string/bored_delay_title"
                 android:inputType="numberDecimal"/>
+        <EditTextPreference
+                android:defaultValue="@string/bored_proba_default"
+                android:key="@string/bored_proba_key"
+                android:title="@string/bored_proba_title"
+                android:inputType="numberDecimal"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -67,6 +72,11 @@
                 android:defaultValue="@string/uninterested_delay_default"
                 android:key="@string/uninterested_delay_key"
                 android:title="@string/uninterested_delay_title"
+                android:inputType="numberDecimal"/>
+        <EditTextPreference
+                android:defaultValue="@string/uninterested_proba_default"
+                android:key="@string/uninterested_proba_key"
+                android:title="@string/uninterested_proba_title"
                 android:inputType="numberDecimal"/>
     </PreferenceCategory>
 
