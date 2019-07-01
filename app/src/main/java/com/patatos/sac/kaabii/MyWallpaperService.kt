@@ -11,6 +11,11 @@ import android.support.v4.content.ContextCompat
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 
+import kotlin.math.atan
+import kotlin.math.cos
+import kotlin.math.min
+import kotlin.math.sin
+
 class MyWallpaperService : WallpaperService() {
 
     override fun onCreateEngine(): Engine {
@@ -62,7 +67,8 @@ class MyWallpaperService : WallpaperService() {
         private var visible = true
         private var boring = false
         private var uninteresting = false
-        private var moving = false
+
+        @Volatile private var moving = false
 
         private var stepCount: Int
         private var enableTouch: Boolean
@@ -84,8 +90,8 @@ class MyWallpaperService : WallpaperService() {
         private var distance = 0f
         private var size = 0f
 
-        private var x = 0f
-        private var y = 0f
+        @Volatile private var x = 0f
+        @Volatile private var y = 0f
 
         init {
             val str = { id: Int -> this@MyWallpaperService.getString(id) }
@@ -127,7 +133,7 @@ class MyWallpaperService : WallpaperService() {
             this.width = 1f * w
             this.height = 1f * h
 
-            Math.min(w, h).also {
+            min(w, h).also {
                 this.distance = this.distanceCoefficient * it
                 this.size = this.sizeCoefficient * it
             }
@@ -191,7 +197,6 @@ class MyWallpaperService : WallpaperService() {
         }
 
         private fun move(px:  Float, py: Float, steps: Int) {
-            if (this.moving) return
             this.moving = true
 
             val sx = this.x
@@ -256,13 +261,13 @@ class MyWallpaperService : WallpaperService() {
             canvas.drawCircle(0f, 0f, .5f, this.brushes[1])
             canvas.drawCircle(0f, 0f, .44f, this.brushes[0])
 
-            val rx = Math.atan(1.0 * px / this.distance)
-            val ry = Math.atan(1.0 * py / this.distance)
+            val rx = atan(1.0 * px / this.distance)
+            val ry = atan(1.0 * py / this.distance)
 
-            val satX = Math.sin(rx).toFloat()
-            val satY = Math.sin(ry).toFloat()
-            val catX = Math.cos(rx).toFloat()
-            val catY = Math.cos(ry).toFloat()
+            val satX = sin(rx).toFloat()
+            val satY = sin(ry).toFloat()
+            val catX = cos(rx).toFloat()
+            val catY = cos(ry).toFloat()
 
             canvas.skew(-this.skewCoefficient * (rx * ry).toFloat(), 0f)
             canvas.scale(this.scaleCoefficient * catX, this.scaleCoefficient * catY)
